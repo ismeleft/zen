@@ -70,7 +70,11 @@ export const BreathingExercise: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value > 0) {
+    if (
+      !isNaN(value) &&
+      value > 0 &&
+      Number.isInteger(Number(event.target.value))
+    ) {
       setTargetCycles(value);
     }
   };
