@@ -1,0 +1,206 @@
+.breathing-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  pointer-events: none; /* Let clicks pass through to background if needed, or maintain interaction */
+  pointer-events: auto;
+}
+
+.breath-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.5s ease;
+  box-shadow: 0 0 40px rgba(129, 140, 248, 0.3);
+}
+
+.center-content {
+  text-align: center;
+}
+
+.breath-circle.inhale {
+  animation: inhale-scale 4s ease-in-out forwards;
+}
+
+.breath-circle.hold {
+  animation: hold-pulse 7s linear forwards;
+}
+
+.breath-circle.exhale {
+  animation: exhale-scale 8s ease-in-out forwards;
+}
+
+.instruction-text {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.timer {
+  font-size: 3rem;
+  font-weight: 100;
+  margin-top: 1rem;
+  color: var(--zen-accent);
+}
+
+.progress-text {
+  margin-top: 4rem;
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.1rem;
+  text-align: center;
+}
+
+.controls {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+}
+
+.input-group label {
+  opacity: 0.9;
+}
+
+.cycles-input {
+  width: 60px;
+  padding: 0.4rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.cycles-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--zen-accent);
+  box-shadow: 0 0 10px rgba(129, 140, 248, 0.3);
+}
+
+.cycles-input::-webkit-inner-spin-button,
+.cycles-input::-webkit-outer-spin-button {
+  opacity: 0.5;
+}
+
+.btn-start {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.8rem 2rem;
+  border-radius: 2rem;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.btn-start:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes inhale-scale {
+  0% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    transform: scale(1.5);
+    border-color: var(--zen-accent);
+    background: rgba(129, 140, 248, 0.1);
+  }
+}
+
+@keyframes hold-pulse {
+  0% {
+    transform: scale(1.5);
+    border-color: var(--zen-accent);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    transform: scale(1.5);
+    border-color: var(--zen-accent);
+  }
+}
+
+@keyframes exhale-scale {
+  0% {
+    transform: scale(1.5);
+    border-color: var(--zen-accent);
+    background: rgba(129, 140, 248, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ========================================
+   MINIMAL ENHANCED EFFECTS
+   ======================================== */
+.breathing-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(
+    circle at center,
+    rgba(129, 140, 248, 0.15) 0%,
+    rgba(79, 70, 229, 0.05) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.breath-circle.inhale {
+  box-shadow: 0 0 60px rgba(129, 140, 248, 0.6);
+}
+
+.breath-circle.hold {
+  box-shadow: 0 0 80px rgba(129, 140, 248, 0.8);
+}
