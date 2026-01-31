@@ -1,0 +1,28 @@
+.emotional-rescue {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.emotional-rescue__leave {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1001;
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.3;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 600ms ease-out;
+  letter-spacing: 0.05rem;
+}
+
+.emotional-rescue__leave:hover {
+  opacity: 0.6;
+}
