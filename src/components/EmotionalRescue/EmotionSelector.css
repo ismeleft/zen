@@ -1,0 +1,54 @@
+.emotion-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.emotion-selector__guide {
+  font-size: 1.2rem;
+  color: #e0e0e0;
+  margin-bottom: 3rem;
+  opacity: 0.8;
+  letter-spacing: 0.1rem;
+}
+
+.emotion-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 320px;
+}
+
+.emotion-selector__item {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 600ms ease-out, box-shadow 600ms ease-out, opacity 800ms ease-out;
+}
+
+.emotion-selector__item:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(255, 223, 186, 0.3);
+}
+
+.emotion-selector__emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.emotion-selector__label {
+  font-size: 0.7rem;
+  color: #e0e0e0;
+  margin-top: 4px;
+}
