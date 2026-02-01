@@ -1,0 +1,53 @@
+.check-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #98c1d9, #e8dfd0);
+  transition: background 1000ms ease-in-out;
+}
+
+.check-in__question {
+  font-size: 1.4rem;
+  color: #3a3a3a;
+  margin-bottom: 3rem;
+  letter-spacing: 0.1rem;
+}
+
+.check-in__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.check-in__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 64px;
+  padding: 0 1.5rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(58, 58, 58, 0.15);
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 600ms ease-out, background 600ms ease-out;
+}
+
+.check-in__option:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.check-in__emoji {
+  font-size: 1.4rem;
+}
+
+.check-in__label {
+  font-size: 1rem;
+  color: #3a3a3a;
+}

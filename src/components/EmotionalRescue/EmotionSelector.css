@@ -1,0 +1,163 @@
+.emotion-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.emotion-selector__guide {
+  font-size: 1.2rem;
+  color: #e0e0e0;
+  margin-bottom: 3rem;
+  opacity: 0.8;
+  letter-spacing: 0.1rem;
+}
+
+.emotion-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 360px;
+}
+
+.emotion-selector__item {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 600ms ease-out;
+}
+
+.emotion-selector__item:hover {
+  transform: scale(1.1);
+}
+
+/* 液態波紋容器 */
+.emotion-blob {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: relative;
+  filter: blur(0.5px);
+}
+
+/* 雙層波紋效果 */
+.emotion-blob::before,
+.emotion-blob::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+.emotion-blob::before {
+  animation: blob-pulse-1 3s ease-in-out infinite;
+}
+
+.emotion-blob::after {
+  animation: blob-pulse-2 4s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* 情緒專屬顏色 */
+.emotion-blob[data-emotion="anxious"]::before {
+  background: radial-gradient(circle, #a78bfa, #818cf8);
+  animation-duration: 2s;
+}
+
+.emotion-blob[data-emotion="anxious"]::after {
+  background: radial-gradient(circle, #818cf8, #6366f1);
+  animation-duration: 2.5s;
+}
+
+.emotion-blob[data-emotion="angry"]::before {
+  background: radial-gradient(circle, #f87171, #ef4444);
+  animation-duration: 1.5s;
+}
+
+.emotion-blob[data-emotion="angry"]::after {
+  background: radial-gradient(circle, #fb923c, #f97316);
+  animation-duration: 1.8s;
+}
+
+.emotion-blob[data-emotion="sad"]::before {
+  background: radial-gradient(circle, #60a5fa, #3b82f6);
+  animation-duration: 4s;
+}
+
+.emotion-blob[data-emotion="sad"]::after {
+  background: radial-gradient(circle, #93c5fd, #60a5fa);
+  animation-duration: 5s;
+}
+
+.emotion-blob[data-emotion="exhausted"]::before {
+  background: radial-gradient(circle, #9ca3af, #6b7280);
+  animation-duration: 5s;
+}
+
+.emotion-blob[data-emotion="exhausted"]::after {
+  background: radial-gradient(circle, #78716c, #57534e);
+  animation-duration: 6s;
+}
+
+.emotion-blob[data-emotion="overwhelmed"]::before {
+  background: radial-gradient(circle, #f59e0b, #ec4899, #8b5cf6);
+  animation-duration: 1.2s;
+}
+
+.emotion-blob[data-emotion="overwhelmed"]::after {
+  background: radial-gradient(circle, #ec4899, #8b5cf6, #3b82f6);
+  animation-duration: 1.5s;
+}
+
+.emotion-blob[data-emotion="lonely"]::before {
+  background: radial-gradient(circle, #a5f3fc, #67e8f9);
+  animation-duration: 4.5s;
+}
+
+.emotion-blob[data-emotion="lonely"]::after {
+  background: radial-gradient(circle, #bae6fd, #7dd3fc);
+  animation-duration: 5.5s;
+}
+
+@keyframes blob-pulse-1 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.4;
+  }
+}
+
+@keyframes blob-pulse-2 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.7;
+  }
+}
+
+.emotion-selector__label {
+  font-size: 0.7rem;
+  color: #e0e0e0;
+  margin-top: 6px;
+}

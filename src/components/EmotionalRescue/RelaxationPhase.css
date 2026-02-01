@@ -1,0 +1,145 @@
+.relaxation-phase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #3d5a80, #98c1d9);
+  transition: background 1000ms ease-in-out;
+  position: relative;
+}
+
+.relaxation-phase__guide {
+  position: absolute;
+  top: 3rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+}
+
+/* Breathing orb */
+.relax-breathing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.relax-breathing__pattern-name {
+  position: absolute;
+  top: 3rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  letter-spacing: 0.15rem;
+}
+
+.relax-breathing__orb {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 40%,
+    rgba(255, 255, 255, 0.3),
+    rgba(152, 193, 217, 0.4) 40%,
+    rgba(61, 90, 128, 0.3)
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1000ms cubic-bezier(0.25, 0.1, 0.25, 1.0),
+              box-shadow 1000ms ease-out,
+              background 1000ms ease-out;
+  box-shadow: 0 0 40px rgba(152, 193, 217, 0.3);
+}
+
+.relax-breathing__orb--inhale {
+  transform: scale(1.5);
+  box-shadow: 0 0 80px rgba(152, 193, 217, 0.6);
+  background: radial-gradient(
+    circle at 40% 40%,
+    rgba(255, 255, 255, 0.4),
+    rgba(152, 193, 217, 0.5) 40%,
+    rgba(61, 90, 128, 0.4)
+  );
+}
+
+.relax-breathing__orb--hold {
+  transform: scale(1.5);
+  box-shadow: 0 0 60px rgba(152, 193, 217, 0.5);
+}
+
+.relax-breathing__orb--exhale {
+  transform: scale(1);
+  box-shadow: 0 0 30px rgba(152, 193, 217, 0.3);
+}
+
+.relax-breathing__orb--holdAfterExhale {
+  transform: scale(1);
+  box-shadow: 0 0 25px rgba(152, 193, 217, 0.25);
+}
+
+.relax-breathing__phase-label {
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 200;
+  letter-spacing: 0.2rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.relax-breathing__count {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 1;
+  margin-top: 8px;
+  font-weight: 300;
+}
+
+.relax-breathing__progress {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 3rem;
+  align-items: center;
+}
+
+.relax-progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+.relax-progress-dot.active {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Grounding & Visualization */
+.relax-grounding,
+.relax-visualization {
+  max-width: 380px;
+  text-align: center;
+}
+
+.relax-grounding__prompt,
+.relax-visualization__prompt {
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  animation: relax-float-up 800ms ease-out;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes relax-float-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

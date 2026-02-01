@@ -1,0 +1,37 @@
+.rescue-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  color: #e0e0e0;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fab-pulse 4000ms ease-in-out infinite;
+  transition: transform 600ms ease-out, box-shadow 600ms ease-out;
+}
+
+.rescue-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 223, 186, 0.3);
+}
+
+@keyframes fab-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 223, 186, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 223, 186, 0.3);
+  }
+}
+
+.rescue-fab__icon {
+  opacity: 0.8;
+}
