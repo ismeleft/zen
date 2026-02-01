@@ -9,7 +9,7 @@ interface EmotionSelectorProps {
 export function EmotionSelector({ onSelect }: EmotionSelectorProps) {
   return (
     <div className="emotion-selector">
-      <p className="emotion-selector__guide">讓我們一起守護你的光</p>
+      <p className="emotion-selector__guide">你現在感覺如何？</p>
       <div className="emotion-selector__grid">
         {EMOTION_OPTIONS.map((option) => (
           <button
@@ -17,8 +17,9 @@ export function EmotionSelector({ onSelect }: EmotionSelectorProps) {
             className="emotion-selector__item"
             onClick={() => onSelect(option.type)}
             aria-label={option.label}
+            data-emotion={option.type}
           >
-            <span className="emotion-selector__emoji">{option.emoji}</span>
+            <div className="emotion-blob" data-emotion={option.type}></div>
             <span className="emotion-selector__label">{option.label}</span>
           </button>
         ))}

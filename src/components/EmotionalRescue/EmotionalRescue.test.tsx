@@ -5,7 +5,7 @@ import { EmotionalRescue } from './EmotionalRescue';
 describe('EmotionalRescue', () => {
   it('should render emotion selector initially', () => {
     render(<EmotionalRescue onClose={vi.fn()} />);
-    expect(screen.getByText('讓我們一起守護你的光')).toBeInTheDocument();
+    expect(screen.getByText('你現在感覺如何？')).toBeInTheDocument();
     expect(screen.getByText('焦慮')).toBeInTheDocument();
   });
 

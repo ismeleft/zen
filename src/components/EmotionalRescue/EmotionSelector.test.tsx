@@ -15,7 +15,7 @@ describe('EmotionSelector', () => {
 
   it('should render the guiding text', () => {
     render(<EmotionSelector onSelect={vi.fn()} />);
-    expect(screen.getByText('讓我們一起守護你的光')).toBeInTheDocument();
+    expect(screen.getByText('你現在感覺如何？')).toBeInTheDocument();
   });
 
   it('should call onSelect with the emotion type when clicked', () => {

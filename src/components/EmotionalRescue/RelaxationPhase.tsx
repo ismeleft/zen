@@ -38,7 +38,14 @@ function BreathingStep({ step, onStepComplete }: { step: RelaxStep; onStepComple
         {isActive && <span className="relax-breathing__count">{count}</span>}
       </div>
       {isActive && (
-        <p className="relax-breathing__progress">{currentCycle} / {totalCycles}</p>
+        <div className="relax-breathing__progress">
+          {Array.from({ length: totalCycles }, (_, i) => (
+            <span
+              key={i}
+              className={`relax-progress-dot ${i < currentCycle ? 'active' : ''}`}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
@@ -106,15 +113,20 @@ export function RelaxationPhase({ emotion, onComplete }: RelaxationPhaseProps) {
 
   return (
     <div className="relaxation-phase">
-      <p className="relaxation-phase__guide">穩住你的氣場</p>
       {currentStep.type === 'breathing' && (
         <BreathingStep key={currentStepIndex} step={currentStep} onStepComplete={handleStepComplete} />
       )}
       {currentStep.type === 'grounding' && (
-        <GroundingStep key={currentStepIndex} step={currentStep} onStepComplete={handleStepComplete} />
+        <>
+          <p className="relaxation-phase__guide">Five Senses</p>
+          <GroundingStep key={currentStepIndex} step={currentStep} onStepComplete={handleStepComplete} />
+        </>
       )}
       {currentStep.type === 'visualization' && (
-        <VisualizationStep key={currentStepIndex} step={currentStep} onStepComplete={handleStepComplete} />
+        <>
+          <p className="relaxation-phase__guide">Safe Space</p>
+          <VisualizationStep key={currentStepIndex} step={currentStep} onStepComplete={handleStepComplete} />
+        </>
       )}
     </div>
   );
