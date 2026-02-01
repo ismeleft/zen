@@ -72,15 +72,61 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+  padding: 4rem 1.5rem;
+  box-sizing: border-box; /* 確保 padding 包含在寬度內，不會額外增加 */
 }
 
-/* Update breathing container to be relative to the section, not fixed/absolute to screen */
+/* 毛玻璃卡片容器 */
 .breathing-container {
   position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  padding: 5rem 4rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  min-height: 550px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box; /* 確保 padding 和 border 包含在 width 內 */
+}
+
+/* RWD: 平板 */
+@media (max-width: 768px) {
+  .breathing-container {
+    padding: 4rem 3rem;
+    min-height: 500px;
+    border-radius: 1.5rem;
+  }
+}
+
+/* RWD: 手機 (調整斷點從 480px 改為 640px，涵蓋現代手機尺寸) */
+@media (max-width: 640px) {
+  .breathing-container {
+    padding: 3rem 1.5rem;
+    min-height: 450px;
+    border-radius: 1rem;
+  }
+
+  .breathing-section {
+    padding: 2rem 1rem;
+  }
+}
+
+/* RWD: 小手機 (針對極小螢幕進一步優化) */
+@media (max-width: 375px) {
+  .breathing-container {
+    padding: 2.5rem 1rem;
+    min-height: 400px;
+  }
+
+  .breathing-section {
+    padding: 1.5rem 0.75rem;
+  }
 }
 
 @keyframes bounce {
