@@ -17,7 +17,6 @@ describe('AuraText', () => {
   });
 
   it('應該渲染所有文字行', () => {
-    render(<AuraText />);
     // 文字行在 aria-hidden 容器內，用 querySelector 直接查 DOM
     const { container } = render(<AuraText />);
     expect(container.querySelector('.aura-text-wrapper')).toBeInTheDocument();

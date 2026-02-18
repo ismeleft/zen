@@ -18,6 +18,12 @@ export function AuraText() {
   useGSAP(() => {
     if (!wrapperRef.current) return;
 
+    // 尊重使用者的「減少動態效果」系統設定（前庭功能障礙無障礙考量）
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReducedMotion) return;
+
     // 緩慢垂直漂浮：y 從 0 → 20px → 0，無限循環，18 秒一週期
     gsap.to(wrapperRef.current, {
       y: 20,
