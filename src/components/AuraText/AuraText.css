@@ -1,0 +1,38 @@
+/* 固定在全域背景，不隨頁面 scroll 移動 */
+.aura-text-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;        /* 完全穿透，不影響點擊 */
+  user-select: none;           /* 不可選取 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  overflow: hidden;
+}
+
+/* 每一行文字 */
+.aura-text-line {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 12vw, 9rem);  /* RWD：手機 ~3rem，桌機最大 9rem */
+  line-height: 1.1;
+  color: var(--zen-text);              /* #e2e8f0 */
+  opacity: 0.12;                       /* 有存在感但不搶焦 */
+  letter-spacing: -0.02em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 手機直向：字稍微小一點讓全部行都能顯示 */
+@media (max-width: 480px) {
+  .aura-text-line {
+    font-size: clamp(2rem, 9vw, 4rem);
+    white-space: normal;
+    text-align: center;
+    max-width: 90vw;
+  }
+}
