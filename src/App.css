@@ -51,7 +51,6 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 1; /* 確保在 AuraText (z-index: 0) 之上，低於 overlay 層 (z-index: 10+) */
   /* Ensure it has a nice background or overlay if desired */
 }
 
@@ -74,7 +73,6 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 1; /* 確保在 AuraText (z-index: 0) 之上，低於 overlay 層 (z-index: 10+) */
   padding: 4rem 1.5rem;
   box-sizing: border-box; /* 確保 padding 包含在寬度內，不會額外增加 */
 }
@@ -82,7 +80,6 @@
 /* 毛玻璃卡片容器 */
 .breathing-container {
   position: relative;
-  z-index: 1; /* 確保在 AuraText (z-index: 0) 之上，低於 overlay 層 (z-index: 10+) */
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
