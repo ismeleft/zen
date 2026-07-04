@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Lotus } from './components/Lotus';
+import LotusBloom from './components/LotusBloom';
 import { BreathingExercise } from './components/BreathingExercise';
 import { RescueFab } from './components/RescueFab';
 import { EmotionalRescue } from './components/EmotionalRescue';
@@ -20,8 +20,7 @@ function App() {
         </header>
 
         <section className="hero-section">
-          <Lotus />
-          <div className="scroll-hint">Scroll to Breathe</div>
+          <LotusBloom />
         </section>
 
         <section className="breathing-section">
