@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 interface LayerConfig {
@@ -11,7 +11,10 @@ interface LayerConfig {
   lift: number;
 }
 
-function makePetalGeometry(length: number, width: number): THREE.BufferGeometry {
+function makePetalGeometry(
+  length: number,
+  width: number,
+): THREE.BufferGeometry {
   const geo = new THREE.PlaneGeometry(1, 1, 10, 20);
   const pos = geo.attributes.position;
   const colors: number[] = [];
@@ -21,8 +24,8 @@ function makePetalGeometry(length: number, width: number): THREE.BufferGeometry 
   const c = new THREE.Color();
 
   for (let i = 0; i < pos.count; i++) {
-    const x0 = pos.getX(i);            // -0.5 ~ 0.5
-    const v = pos.getY(i) + 0.5;       // 0 (基部) ~ 1 (尖端)
+    const x0 = pos.getX(i); // -0.5 ~ 0.5
+    const v = pos.getY(i) + 0.5; // 0 (基部) ~ 1 (尖端)
 
     // 寬度輪廓：基部窄、中段寬、尖端收成尖
     const profile = Math.pow(Math.sin(Math.pow(v, 0.75) * Math.PI), 0.85);
@@ -34,7 +37,7 @@ function makePetalGeometry(length: number, width: number): THREE.BufferGeometry 
     // 橫向內凹（杯狀）+ 縱向微拱 + 尖端回勾
     const cup = 0.22 * width * (xn * xn) * profile;
     const arch = 0.16 * length * Math.sin(v * Math.PI);
-    const tipCurl = 0.10 * length * Math.pow(v, 3);
+    const tipCurl = 0.1 * length * Math.pow(v, 3);
     const z = cup + arch - tipCurl;
 
     pos.setXYZ(i, x, y, z);
@@ -56,27 +59,54 @@ const smoothstep = (a: number, b: number, t: number): number => {
 
 /* 由外而內依序綻放的四層花瓣 */
 const LAYERS: LayerConfig[] = [
-  { count: 12, len: 1.60, width: 0.82, closed: 0.20, open: 1.42, delay: 0.00, lift: 0.00 },
-  { count: 10, len: 1.52, width: 0.74, closed: 0.15, open: 1.10, delay: 0.14, lift: 0.03 },
-  { count: 8,  len: 1.36, width: 0.64, closed: 0.10, open: 0.80, delay: 0.30, lift: 0.06 },
-  { count: 6,  len: 1.15, width: 0.54, closed: 0.06, open: 0.52, delay: 0.46, lift: 0.09 },
+  {
+    count: 12,
+    len: 1.6,
+    width: 0.82,
+    closed: 0.2,
+    open: 1.42,
+    delay: 0.0,
+    lift: 0.0,
+  },
+  {
+    count: 10,
+    len: 1.52,
+    width: 0.74,
+    closed: 0.15,
+    open: 1.1,
+    delay: 0.14,
+    lift: 0.03,
+  },
+  {
+    count: 8,
+    len: 1.36,
+    width: 0.64,
+    closed: 0.1,
+    open: 0.8,
+    delay: 0.3,
+    lift: 0.06,
+  },
+  {
+    count: 6,
+    len: 1.15,
+    width: 0.54,
+    closed: 0.06,
+    open: 0.52,
+    delay: 0.46,
+    lift: 0.09,
+  },
 ];
+
+const BLOOM_DURATION_MS = 4500;
 
 export default function LotusBloom() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const stateRef = useRef<{ progress: number; playing: boolean; target: number | null }>({
-    progress: 0,
-    playing: false,
-    target: null,
-  });
-  const [progress, setProgress] = useState(0);
-  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    const st = stateRef.current;
-    const W = mount.clientWidth, H = mount.clientHeight;
+    const W = mount.clientWidth,
+      H = mount.clientHeight;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("#0b1e24");
@@ -122,7 +152,7 @@ export default function LotusBloom() {
         const holder = new THREE.Group();
         holder.rotation.y = angle;
         const pivot = new THREE.Group();
-        pivot.position.set(0, 0.05 + cfg.lift, 0.10 + li * 0.015);
+        pivot.position.set(0, 0.05 + cfg.lift, 0.1 + li * 0.015);
         const petal = new THREE.Mesh(geo, petalMat);
         pivot.add(petal);
         holder.add(pivot);
@@ -135,22 +165,30 @@ export default function LotusBloom() {
     /* 花心蓮蓬 + 花蕊 */
     const center = new THREE.Group();
     const pod = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.16, 0.10, 0.22, 20),
-      new THREE.MeshStandardMaterial({ color: "#c9d75a", roughness: 0.8 })
+      new THREE.CylinderGeometry(0.16, 0.1, 0.22, 20),
+      new THREE.MeshStandardMaterial({ color: "#c9d75a", roughness: 0.8 }),
     );
     pod.position.y = 0.22;
     center.add(pod);
     const stamenMat = new THREE.MeshStandardMaterial({
-      color: "#ffcf5e", emissive: "#7a5210", roughness: 0.6,
+      color: "#ffcf5e",
+      emissive: "#7a5210",
+      roughness: 0.6,
     });
     for (let i = 0; i < 24; i++) {
       const a = (i / 24) * Math.PI * 2;
-      const r = 0.20 + (i % 2) * 0.045;
-      const s = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.008, 0.26, 6), stamenMat);
+      const r = 0.2 + (i % 2) * 0.045;
+      const s = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.012, 0.008, 0.26, 6),
+        stamenMat,
+      );
       s.position.set(Math.cos(a) * r, 0.24, Math.sin(a) * r);
       s.rotation.z = -Math.cos(a) * 0.35;
       s.rotation.x = Math.sin(a) * 0.35;
-      const tip = new THREE.Mesh(new THREE.SphereGeometry(0.022, 8, 8), stamenMat);
+      const tip = new THREE.Mesh(
+        new THREE.SphereGeometry(0.022, 8, 8),
+        stamenMat,
+      );
       tip.position.y = 0.14;
       s.add(tip);
       center.add(s);
@@ -160,7 +198,9 @@ export default function LotusBloom() {
     /* 蓮葉水面 */
     const leafGeo = new THREE.CircleGeometry(1.6, 48, 0.25, Math.PI * 2 - 0.5);
     const leafMat = new THREE.MeshStandardMaterial({
-      color: "#1d5c48", roughness: 0.85, side: THREE.DoubleSide,
+      color: "#1d5c48",
+      roughness: 0.85,
+      side: THREE.DoubleSide,
     });
     const leaf = new THREE.Mesh(leafGeo, leafMat);
     leaf.rotation.x = -Math.PI / 2;
@@ -168,31 +208,46 @@ export default function LotusBloom() {
     scene.add(leaf);
     const water = new THREE.Mesh(
       new THREE.CircleGeometry(9, 48),
-      new THREE.MeshStandardMaterial({ color: "#0e2f38", roughness: 0.3, metalness: 0.4 })
+      new THREE.MeshStandardMaterial({
+        color: "#0e2f38",
+        roughness: 0.3,
+        metalness: 0.4,
+      }),
     );
     water.rotation.x = -Math.PI / 2;
     water.position.y = -0.05;
     scene.add(water);
 
     /* ---------- 視角（拖曳環繞 + 滾輪縮放） ---------- */
-    let theta = 0.5, phi = 1.12, dist = 5.2;
-    let dragging = false, px = 0, py = 0;
+    let theta = 0.5,
+      phi = 1.12,
+      dist = 5.2;
+    let dragging = false,
+      px = 0,
+      py = 0;
     const updateCam = () => {
       camera.position.set(
         dist * Math.sin(phi) * Math.sin(theta),
         dist * Math.cos(phi) + 0.7,
-        dist * Math.sin(phi) * Math.cos(theta)
+        dist * Math.sin(phi) * Math.cos(theta),
       );
       camera.lookAt(0, 0.7, 0);
     };
-    const onDown = (e: PointerEvent) => { dragging = true; px = e.clientX; py = e.clientY; };
+    const onDown = (e: PointerEvent) => {
+      dragging = true;
+      px = e.clientX;
+      py = e.clientY;
+    };
     const onMove = (e: PointerEvent) => {
       if (!dragging) return;
       theta -= (e.clientX - px) * 0.006;
       phi = Math.min(1.5, Math.max(0.35, phi - (e.clientY - py) * 0.006));
-      px = e.clientX; py = e.clientY;
+      px = e.clientX;
+      py = e.clientY;
     };
-    const onUp = () => { dragging = false; };
+    const onUp = () => {
+      dragging = false;
+    };
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       dist = Math.min(9, Math.max(3, dist + e.deltaY * 0.004));
@@ -203,9 +258,13 @@ export default function LotusBloom() {
     renderer.domElement.addEventListener("wheel", onWheel, { passive: false });
 
     /* ---------- 動畫迴圈 ---------- */
-    const clock = new THREE.Clock();
-    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const reduced = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    )?.matches;
     let raf: number;
+    // 用絕對時間戳計算 progress，避免 THREE.Clock 累積 delta 或 tab 隱藏造成的問題
+    const animStartMs = performance.now();
+    let prevMs = animStartMs;
 
     const applyBloom = (t: number) => {
       LAYERS.forEach((cfg, li) => {
@@ -224,30 +283,25 @@ export default function LotusBloom() {
 
     const loop = () => {
       raf = requestAnimationFrame(loop);
-      const dt = Math.min(clock.getDelta(), 0.05);
+      const nowMs = performance.now();
+      const dt = Math.min((nowMs - prevMs) / 1000, 0.05);
+      prevMs = nowMs;
 
-      if (st.target !== null) {
-        st.progress = st.target;
-        st.target = null;
-      } else if (st.playing) {
-        st.progress = Math.min(1, st.progress + dt * 0.22);
-        if (st.progress >= 1) {
-          st.playing = false;
-          setPlaying(false);
-        }
-        setProgress(st.progress);
-      }
-      applyBloom(st.progress);
+      const bloomProgress = Math.min(1, (nowMs - animStartMs) / BLOOM_DURATION_MS);
+      const elapsed = (nowMs - animStartMs) / 1000;
+
+      applyBloom(bloomProgress);
 
       if (!reduced && !dragging) theta += dt * 0.08; // 緩慢自轉
-      flower.position.y = reduced ? 0 : Math.sin(clock.elapsedTime * 0.8) * 0.02;
+      flower.position.y = reduced ? 0 : Math.sin(elapsed * 0.8) * 0.02;
       updateCam();
       renderer.render(scene, camera);
     };
     loop();
 
     const onResize = () => {
-      const w = mount.clientWidth, h = mount.clientHeight;
+      const w = mount.clientWidth,
+        h = mount.clientHeight;
       camera.aspect = w / h || 1;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -269,88 +323,20 @@ export default function LotusBloom() {
     };
   }, []);
 
-  const play = useCallback(() => {
-    const st = stateRef.current;
-    if (st.progress >= 1) st.progress = 0; // 已全開則從頭播
-    st.playing = true;
-    setPlaying(true);
-  }, []);
-
-  const pause = useCallback(() => {
-    stateRef.current.playing = false;
-    setPlaying(false);
-  }, []);
-
-  const reset = useCallback(() => {
-    const st = stateRef.current;
-    st.playing = false;
-    st.target = 0;
-    setPlaying(false);
-    setProgress(0);
-  }, []);
-
-  const onSlide = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = parseFloat(e.target.value);
-    stateRef.current.playing = false;
-    stateRef.current.target = v;
-    setPlaying(false);
-    setProgress(v);
-  };
-
   return (
-    <div style={{
-      width: "100%", height: "100vh", position: "relative",
-      background: "#0b1e24", fontFamily: "'Songti SC','Noto Serif TC',serif",
-      overflow: "hidden",
-    }}>
-      <div ref={mountRef} style={{ position: "absolute", inset: 0, cursor: "grab" }} />
-
-      <div style={{
-        position: "absolute", top: 28, left: 0, right: 0,
-        textAlign: "center", pointerEvents: "none", color: "#e9dcc3",
-      }}>
-        <div style={{ fontSize: 30, letterSpacing: "0.5em", textIndent: "0.5em" }}>蓮 花</div>
-        <div style={{ fontSize: 12, letterSpacing: "0.35em", opacity: 0.55, marginTop: 6 }}>
-          自花苞至盛放 · 拖曳旋轉視角
-        </div>
-      </div>
-
-      <div style={{
-        position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)",
-        display: "flex", alignItems: "center", gap: 14,
-        background: "rgba(10,26,31,0.72)", border: "1px solid rgba(233,220,195,0.18)",
-        borderRadius: 999, padding: "12px 20px", backdropFilter: "blur(8px)",
-      }}>
-        <button
-          onClick={playing ? pause : play}
-          style={{
-            width: 44, height: 44, borderRadius: "50%", border: "none",
-            background: "#e56a9a", color: "#fff", fontSize: 15, cursor: "pointer",
-          }}
-          aria-label={playing ? "暫停" : "播放綻放動畫"}
-        >
-          {playing ? "❚❚" : "▶"}
-        </button>
-        <input
-          type="range" min="0" max="1" step="0.001"
-          value={progress} onChange={onSlide}
-          aria-label="綻放進度"
-          style={{ width: 200, accentColor: "#e56a9a" }}
-        />
-        <span style={{ color: "#e9dcc3", fontSize: 12, width: 56, letterSpacing: "0.1em" }}>
-          {progress < 0.05 ? "花苞" : progress < 0.95 ? `${Math.round(progress * 100)}%` : "盛放"}
-        </span>
-        <button
-          onClick={reset}
-          style={{
-            border: "1px solid rgba(233,220,195,0.35)", background: "transparent",
-            color: "#e9dcc3", borderRadius: 999, padding: "8px 16px",
-            fontSize: 12, letterSpacing: "0.2em", cursor: "pointer",
-          }}
-        >
-          重設
-        </button>
-      </div>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        position: "relative",
+        background: "#0b1e24",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        ref={mountRef}
+        style={{ position: "absolute", inset: 0, cursor: "grab" }}
+      />
     </div>
   );
 }
